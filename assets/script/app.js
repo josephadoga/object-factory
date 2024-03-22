@@ -13,43 +13,51 @@ const inputShape = select('.shape');
 const inputColour = select('.colour');
 const selectButton = select('.create');
 const gridBox = select('.grid-box');
-const messageBox = select('.message');
-const div = select('div');
+const messageBox = select('.message p');
 
-figureArray = []''
+const figureArray = [];
 
+function createDiv(shape, colour) {
+    const newDiv = document.createElement('div');
+    newDiv.className = `figure-${shape}`;
+    newDiv.style.backgroundColor = colour;
+    gridBox.appendChild(newDiv);
+
+    return newDiv;
+}
+ 
 function createShape() {
     const shape = inputShape.value;
     const colour = inputColour.value;
+    const selectedInputColour = inputColour.options[inputColour.selectedIndex];
 
-    const figure = new Shape(shape, colour);
+    const figure = new Shape(shape, selectedInputColour.textContent);
+    figureArray.push(figure);
+    let info = figure.getInfo();
 
     if (shape && colour) {
-        // gridBox.innerHTML += `<div class="figure-square"></div>`;
-        // gridBox.style.backgroundColor = colour;
+        messageBox.innerText = '';
+        let newDiv = createDiv(shape, colour);
 
-        const newDiv = document.createElement('div');
-        newDiv.className = `figure-${shape}`;
-        newDiv.style.backgroundColor = colour;
-        gridBox.appendChild(newDiv);
+        listen('click', newDiv, () => {
+            messageBox.innerText = `Unit: ${figureArray.indexOf(figure) + 1} ${info}`;
+        });
+    } else if(shape === '' || colour === '') {
+        messageBox.innerText = 'Please select a Shape and Colour to start !!!';
     }
+}
 
-    // gridBox.innerHTML += `<div class="figure-square"></div>`;
-    // figureSquare.style.backgroundColor = colour;
-
-    // const newDiv = document.createElement('div');
-    // newDiv.className = 'figure-square';
-    // newDiv.style.backgroundColor = colour;
-    // gridBox.appendChild(newDiv);
+function check(){
+    if (figureArray.length === 20) {
+        selectButton.style.backgroundColor = '#f00';
+        selectButton.textContent = 'Reset';
+    }
 }
 
 listen('click', selectButton, () => {
     createShape();
-    messageBox.innerText = '';
+    check();
 });
 
-listen('click', div, () => {
-    createShape();
-    messageBox.innerText = '';
-});
+
 
