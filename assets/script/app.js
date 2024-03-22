@@ -17,7 +17,7 @@ const messageBox = select('.message p');
 
 const figureArray = [];
 
-function createDiv(shape, colour) {
+function addDiv(shape, colour) {
     const newDiv = document.createElement('div');
     newDiv.className = `figure-${shape}`;
     newDiv.style.backgroundColor = colour;
@@ -37,47 +37,32 @@ function createShape() {
 
     if (shape && colour) {
         messageBox.innerText = '';
-        let newDiv = createDiv(shape, colour);
+        let newDiv = addDiv(shape, colour);
 
         listen('click', newDiv, () => {
-            messageBox.innerText = `Unit: ${figureArray.indexOf(figure) + 1} ${info}`;
+            messageBox.innerText = `Unit: ${figureArray.indexOf(figure) + 1} | ${info}`;
         });
-    } else if(shape === '' || colour === '') {
-        messageBox.innerText = 'Please select a Shape and Colour to start !!!';
+    } else {
+        messageBox.innerHTML = `Please select a Shape and Colour to start <span>!!!<span>`;
     }
 }
 
-function resetButton() {
-    selectButton.value = 'Create';
-    selectButton.style.backgroundColor = 'var(--app-blue)';
-
-    listen('click', selectButton, () => {
-        createShape();
-        check();
-    });
-}
-
-function resetArray() {
-    figureArray.length = 0;
-}
-
-function check(){
+function checkFullCapacity(){
     if (figureArray.length === 20) {
         messageBox.innerText = 'Its full! Reset!';
         selectButton.value = 'Reset';
         selectButton.style.backgroundColor = '#f00';
 
         listen('click', selectButton, () => {
-            resetButton();
-            resetArray();
             gridBox.innerHTML = ``;
+            location.reload();
         });
     }
 }
 
 listen('click', selectButton, () => {
     createShape();
-    check();
+    checkFullCapacity();
 });
 
 
