@@ -47,10 +47,31 @@ function createShape() {
     }
 }
 
+function resetButton() {
+    selectButton.value = 'Create';
+    selectButton.style.backgroundColor = 'var(--app-blue)';
+
+    listen('click', selectButton, () => {
+        createShape();
+        check();
+    });
+}
+
+function resetArray() {
+    figureArray.length = 0;
+}
+
 function check(){
     if (figureArray.length === 20) {
+        messageBox.innerText = 'Its full! Reset!';
+        selectButton.value = 'Reset';
         selectButton.style.backgroundColor = '#f00';
-        selectButton.textContent = 'Reset';
+
+        listen('click', selectButton, () => {
+            resetButton();
+            resetArray();
+            gridBox.innerHTML = ``;
+        });
     }
 }
 

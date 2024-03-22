@@ -79,6 +79,7 @@ input[type=button]:hover {
     grid-template-rows: repeat(4, 1fr);
     padding: 10px;
     transform: rotateX(180deg);
+    overflow: hidden;
 }
 
 
